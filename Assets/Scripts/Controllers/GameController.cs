@@ -7,14 +7,16 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "GameController", menuName = "GameController")]
 public class GameController : ScriptableObject
 {
+    public static GameController Instance;
+
     [Header("Platforms")]
     public float platformCount = 10;
-    public float playformDistance = 10;
+    public float platformDistance = 10;
 
     public Action OnPlayerDie;
     public Action OnGameCompleted;
-     
-    public static GameController Instance;
+
+    private Spawnpoint spawnpoint;
 
     public void Init()
     {
@@ -23,6 +25,11 @@ public class GameController : ScriptableObject
 
         OnPlayerDie += HandleOnPlayerDie;
         OnGameCompleted += HandleOnGameCompleted;
+
+        spawnpoint = FindObjectOfType<Spawnpoint>();
+
+        if (spawnpoint == null)
+            Debug.LogError("No spawnpoint found in scene!");
     }
 
     private void HandleOnGameCompleted()

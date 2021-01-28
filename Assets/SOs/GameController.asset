@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a35de079cd3132a45aa495e82147c915, type: 3}
   m_Name: GameController
   m_EditorClassIdentifier: 
+  platformCount: 10
+  platformDistance: 10
