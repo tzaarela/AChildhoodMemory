@@ -65,6 +65,6 @@ public class PlayerController : MonoBehaviour
 
 	public void Die()
 	{
-		GameController.Instance.OnPlayerDie.Invoke();
+		GameController.Instance.OnPlayerDie.Invoke(this);
 	}
 }
