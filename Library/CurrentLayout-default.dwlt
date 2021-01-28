@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1904
     height: 968
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Package Manager
   m_RootView: {fileID: 4}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -71,10 +71,10 @@ MonoBehaviour:
     y: 0
     width: 1376
     height: 658
-  m_MinSize: {x: 303, y: 221}
+  m_MinSize: {x: 903, y: 271}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 75
+  controlID: 19
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -171,10 +171,10 @@ MonoBehaviour:
     y: 30
     width: 1904
     height: 918
-  m_MinSize: {x: 811, y: 492}
+  m_MinSize: {x: 1411, y: 492}
   m_MaxSize: {x: 22006, y: 14042}
   vertical: 0
-  controlID: 73
+  controlID: 170
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -196,10 +196,10 @@ MonoBehaviour:
     y: 0
     width: 1376
     height: 918
-  m_MinSize: {x: 303, y: 342}
+  m_MinSize: {x: 903, y: 392}
   m_MaxSize: {x: 8003, y: 8042}
   vertical: 1
-  controlID: 74
+  controlID: 88
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: PackageManagerWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -219,14 +219,14 @@ MonoBehaviour:
     y: 0
     width: 764
     height: 658
-  m_MinSize: {x: 201, y: 221}
+  m_MinSize: {x: 801, y: 271}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 16}
+  m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 16}
   - {fileID: 17}
   - {fileID: 18}
-  m_Selected: 0
+  m_Selected: 2
   m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 19
+  controlID: 143
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: 0, y: 0, z: 0}
     speed: 2
-    m_Value: {x: -68.45167, y: -112.53193, z: -176.00928}
+    m_Value: {x: 0, y: 0, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -516,7 +516,7 @@ MonoBehaviour:
       m_Fade:
         m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 10
     speed: 2
-    m_Value: 180.34436
+    m_Value: 10
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -644,10 +644,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 0
-    y: 73
-    width: 1229
-    height: 651
+    x: 8
+    y: 81
+    width: 763
+    height: 637
   m_ViewDataDictionary: {fileID: 0}
 --- !u!114 &19
 MonoBehaviour:
@@ -730,7 +730,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: b4f1ffff
       m_LastClickedID: 0
       m_ExpandedIDs: 3afaffff
       m_RenameOverlay:
@@ -800,7 +800,7 @@ MonoBehaviour:
   m_StartGridSize: 16
   m_LastFolders: []
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Programming\Repos\Unity Games\New Unity Projet
+  m_LastProjectPath: C:\Programming\Repos\Unity Games\ProjectWell
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
@@ -835,7 +835,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffffc6500000
+    m_ExpandedIDs: ffffffff00000000be500000ec50000004510000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
