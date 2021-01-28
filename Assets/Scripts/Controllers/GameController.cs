@@ -4,32 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameController : MonoBehaviour
+[CreateAssetMenu(fileName = "GameController", menuName = "GameController")]
+public class GameController : ScriptableObject
 {
+    [Header("Platforms")]
+    public float platformCount = 10;
+    public float playformDistance = 10;
+
     public Action OnPlayerDie;
     public Action OnGameCompleted;
      
     public static GameController Instance;
 
-    private void Awake()
+    public void Init()
     {
-        if (Instance == null)
+        if (Instance != this)
             Instance = this;
-    }
 
-    private void Start()
-    {
         OnPlayerDie += HandleOnPlayerDie;
         OnGameCompleted += HandleOnGameCompleted;
     }
 
     private void HandleOnGameCompleted()
     {
-        throw new NotImplementedException();
+        Debug.Log("Game completed!");
     }
 
     private void HandleOnPlayerDie()
     {
-        throw new NotImplementedException();
+        Debug.Log("Player died!");
     }
 }
