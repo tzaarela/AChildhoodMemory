@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 	public float wallJumpVerticalBoost = 10;
 	public float wallSensitivity = 1f;
 	public LayerMask groundLayer, wallLayer;
+
 	[SerializeField]
 	PlayerParticles playerParticles;
 
@@ -88,6 +89,13 @@ public class PlayerController : MonoBehaviour
 
 		//When in Corner
 		bool isInCorner = canWallJump && isGrounded;
+
+		if(sideWallLeft == null || sideWallRight == null)
+        {
+			Debug.LogError("SideWalls not assigned in PlayerController");
+			return;
+        }
+
 		sideWallLeft.enabled = !isInCorner;
 		sideWallRight.enabled = !isInCorner;
 	}
