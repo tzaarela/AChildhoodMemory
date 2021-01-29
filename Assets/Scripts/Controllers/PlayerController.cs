@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+	[SerializeField]
+	PlayerParticles playerParticles;
+
 	public float speed = 1;
 	public float maxSpeed = 10;
 	public float jumpStrength = 4;
@@ -16,6 +20,7 @@ public class PlayerController : MonoBehaviour
 	private bool isGrounded;
 	private bool isDashing;
 	private Rigidbody2D rb;
+
 
 	private void Awake()
 	{
@@ -42,8 +47,16 @@ public class PlayerController : MonoBehaviour
 		//Jump
 		if(isJumping && isGrounded)
 		{
-			Debug.Log("IsJumping...");
 			rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
+
+			if (playerParticles == null)
+            {
+				Debug.LogWarning("dustParticle on jump is not set!");
+				return;
+            }
+
+			Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
+			Debug.Log("IsJumping...");
 		}
 	}
 
