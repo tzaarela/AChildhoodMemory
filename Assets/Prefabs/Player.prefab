@@ -317,6 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sideWallLeft: {fileID: 0}
   sideWallRight: {fileID: 0}
+  playerParticles:
+    jumpDustParticleSystem: {fileID: 19826678, guid: c05e92eaee7a00844867e5edc8e0dde1, type: 3}
   speed: 0.5
   maxSpeed: 5
   jumpStrength: 9
@@ -325,15 +327,13 @@ MonoBehaviour:
   wallJumpStrength: 10
   wallJumpVerticalBoost: 10
   wallSensitivity: 1
+  fallMultiplier: 3.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
-  playerParticles:
-    jumpDustParticleSystem: {fileID: 0}
-  fallMultiplier: 3.1
+    m_Bits: 128
 --- !u!114 &240609731934203533
 MonoBehaviour:
   m_ObjectHideFlags: 0

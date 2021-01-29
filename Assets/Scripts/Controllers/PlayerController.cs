@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private SurfaceEffector2D sideWallLeft, sideWallRight;
 
+	[SerializeField]
+	PlayerParticles playerParticles;
+
 	public float speed = 1;
 	public float maxSpeed = 10;
 	public float jumpStrength = 4;
@@ -18,14 +21,11 @@ public class PlayerController : MonoBehaviour
 	public float wallJumpStrength = 40;
 	public float wallJumpVerticalBoost = 10;
 	public float wallSensitivity = 1f;
+	public float fallMultiplier = 2.5f;
 	public LayerMask groundLayer, wallLayer;
 
-	[SerializeField]
-	PlayerParticles playerParticles;
-
-	public float fallMultiplier = 2.5f;
-
 	private float horizontalInput;
+	private bool isCornered;
 	private bool isJumping;
 	private bool isGrounded;
 	private bool isDashing;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 	{
 		Move();
 		CheckIfGrounded();
-		WallJump();
+		CheckForWallJump();
 		Jump();
 		CheckIfCornered();
 		
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 	
-	private void WallJump()
+	private void CheckForWallJump()
 	{
 		var hitWallLeft = Physics2D.Raycast(transform.position, Vector2.left, wallSensitivity, wallLayer);
 		var hitWallRight = Physics2D.Raycast(transform.position, Vector2.right, wallSensitivity, wallLayer);
@@ -83,7 +83,26 @@ public class PlayerController : MonoBehaviour
 
 	private void Jump()
 	{
-		if(isJumping && isGrounded)
+		if (!isJumping)
+			return;
+
+		if (canWallJump)
+		{
+			if (transform.position.x < 0)
+			{
+				AudioController.Instance.PlaySound("WallJump");
+				rb.velocity = new Vector2(4, 4);
+				rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
+			}
+			else if (transform.position.x > 0)
+			{
+				AudioController.Instance.PlaySound("WallJump");
+				rb.velocity = new Vector2(-4, 4);
+				rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
+			}
+		}
+
+		else if (isGrounded)
 		{
 			//Debug.Log("IsJumping...");
 			AudioController.Instance.PlaySound("Jump");
@@ -103,7 +122,7 @@ public class PlayerController : MonoBehaviour
 
 	private void CheckIfCornered()
 	{
-		bool isInCorner = canWallJump && isGrounded;
+		isCornered = canWallJump && isGrounded;
 
 		if(sideWallLeft == null || sideWallRight == null)
         {
@@ -111,8 +130,8 @@ public class PlayerController : MonoBehaviour
 			return;
         }
 
-		sideWallLeft.enabled = !isInCorner;
-		sideWallRight.enabled = !isInCorner;
+		sideWallLeft.enabled = !isCornered;
+		sideWallRight.enabled = !isCornered;
 	}
 
 	public void OnMove(InputAction.CallbackContext inputAction)
@@ -124,22 +143,6 @@ public class PlayerController : MonoBehaviour
 	public void OnJump(InputAction.CallbackContext inputAction)
 	{
 		isJumping = inputAction.ReadValue<float>() == 1f;
-		
-		if (canWallJump && isJumping)
-		{
-			if (transform.position.x < 0)
-			{
-				AudioController.Instance.PlaySound("WallJump");
-				rb.velocity = new Vector2(4, 4);
-				rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
-			}
-			else if (transform.position.x > 0)
-			{
-				AudioController.Instance.PlaySound("WallJump");
-				rb.velocity = new Vector2(-4, 4);
-				rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
-			}
-		}
 	}
 	
 	public void OnDash(InputAction.CallbackContext inputAction)
