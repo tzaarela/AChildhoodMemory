@@ -34,12 +34,8 @@ public class PlayerController : MonoBehaviour
         //Move
         if (Mathf.Abs(rb.velocity.x) < maxSpeed)
             rb.velocity += new Vector2(horizontalInput * speed, 0);
-        Debug.Log(rb.velocity);
         // var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
-        // Debug.Log(clampedVector);
         // rb.velocity = clampedVector;
-        
-        
         
         //Check if grounded       
         var hit = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
