@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity += Vector2.up * jumpStrength;
             //rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
 
-            if (playerParticles == null)
+            if (playerParticles.jumpDustParticleSystem == null)
             {
                 Debug.LogWarning("dustParticle on jump is not set!");
                 return;
