@@ -323,10 +323,10 @@ MonoBehaviour:
   maxSpeed: 5
   jumpStrength: 9
   jumpSensitivity: 0.1
-  dashStrength: 4
-  wallJumpStrength: 10
+  dashStrength: 2
+  wallJumpStrength: 6
   wallJumpVerticalBoost: 10
-  wallSensitivity: 1
+  wallSensitivity: 0.1
   fallMultiplier: 3.1
   groundLayer:
     serializedVersion: 2

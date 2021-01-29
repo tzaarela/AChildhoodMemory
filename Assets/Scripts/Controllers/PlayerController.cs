@@ -41,8 +41,7 @@ public class PlayerController : MonoBehaviour
 	{
 		Move();
 		CheckIfGrounded();
-		CheckForWallJump();
-		Jump();
+		CheckForWalls();
 		CheckIfCornered();
 		
 		//Better jump (increased velocity when moving down)
@@ -69,7 +68,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 	
-	private void CheckForWallJump()
+	private void CheckForWalls()
 	{
 		var hitWallLeft = Physics2D.Raycast(transform.position, Vector2.left, wallSensitivity, wallLayer);
 		var hitWallRight = Physics2D.Raycast(transform.position, Vector2.right, wallSensitivity, wallLayer);
@@ -81,12 +80,13 @@ public class PlayerController : MonoBehaviour
 		}	
 	}
 
-	private void Jump()
+	private void Jump(InputAction.CallbackContext jumpAction)
 	{
-		if (!isJumping)
-			return;
+		//if (!isJumping)
+		//	return;
+		
 
-		if (canWallJump)
+		if (canWallJump && !isGrounded && jumpAction.performed)
 		{
 			if (transform.position.x < 0)
 			{
@@ -100,9 +100,11 @@ public class PlayerController : MonoBehaviour
 				rb.velocity = new Vector2(-4, 4);
 				rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
 			}
+
+			Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
 		}
 
-		else if (isGrounded)
+		else if (isGrounded && jumpAction.performed)
 		{
 			//Debug.Log("IsJumping...");
 			AudioController.Instance.PlaySound("Jump");
@@ -140,11 +142,11 @@ public class PlayerController : MonoBehaviour
 		horizontalInput = inputAction.ReadValue<float>();
 	}
 
-	public void OnJump(InputAction.CallbackContext inputAction)
+	public void OnJump(InputAction.CallbackContext jumpAction)
 	{
-		isJumping = inputAction.ReadValue<float>() == 1f;
+		Jump(jumpAction);
 	}
-	
+
 	public void OnDash(InputAction.CallbackContext inputAction)
 	{
 		isDashing = inputAction.ReadValue<float>() == 1f;

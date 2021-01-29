@@ -32,7 +32,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                     ""id"": ""b596c8c0-568f-4696-ba61-e6da94831800"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Dash"",
