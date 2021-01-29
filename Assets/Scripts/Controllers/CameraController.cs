@@ -6,10 +6,7 @@ public class CameraController : MonoBehaviour
 {
 	public static CameraController Instance;
 
-	private Vector3 cameraStartPosition;
-
-	private Cinemachine.CinemachineVirtualCamera cameraBrain;
-	private BoxCollider2D killZoneCollider;
+	private Cinemachine.CinemachineVirtualCamera CVCam;
 
 	private void Awake() 
 	{
@@ -19,25 +16,11 @@ public class CameraController : MonoBehaviour
 
 	private void Start() 
 	{
-		cameraStartPosition = transform.position;
-		cameraBrain = GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>();
-		killZoneCollider = GetComponentInChildren<BoxCollider2D>();
+		CVCam = GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>();
 	}
 
 	public void ResetCameraPosition(PlayerController playerController) 
 	{
-		// killZoneCollider.gameObject.SetActive(false);
-		// transform.position = cameraStartPosition;
-		cameraBrain.enabled = false;
-		cameraBrain.transform.SetPositionAndRotation(cameraStartPosition, Quaternion.identity);
-		playerController.transform.position = GameController.Instance.spawnpoint.transform.position;
-		cameraBrain.enabled = true;
-		// StartCoroutine(CoWaitForCamera(playerController));
-	}
-
-	private IEnumerator CoWaitForCamera(PlayerController playerController) 
-	{
-		yield return new WaitForSeconds(3);
-		// killZoneCollider.gameObject.SetActive(true);
+		CVCam.OnTargetObjectWarped(playerController.transform, Vector3.down * 100);
 	}
 }

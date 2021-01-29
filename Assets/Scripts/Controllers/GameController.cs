@@ -47,9 +47,7 @@ public class GameController : ScriptableObject
 	private void HandleOnPlayerDie(PlayerController playerController)
 	{
 		Debug.Log("Player died!");
-		
+		playerController.transform.position = GameController.Instance.spawnpoint.transform.position;
 		CameraController.Instance.ResetCameraPosition(playerController);
 	}
-
-	
 }
