@@ -270,13 +270,13 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 2.2
+  m_AngularDrag: 0.05
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &865051582108508027
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -315,15 +315,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35c9506019176d459e99e4150e28661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerParticles:
-    jumpDustParticleSystem: {fileID: 8008817529728470359, guid: f7f4d3b2b60e8204f8e118182cb2f7c5, type: 3}
-  speed: 0.6
-  maxSpeed: 12
-  jumpStrength: 12
+  speed: 0.5
+  maxSpeed: 5
+  jumpStrength: 9
   jumpSensitivity: 0.1
+  dashStrength: 4
+  wallJumpStrength: 10
+  wallJumpVerticalBoost: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  playerParticles:
+    jumpDustParticleSystem: {fileID: 8008817529728470359, guid: f7f4d3b2b60e8204f8e118182cb2f7c5, type: 3}
+  fallMultiplier: 3.1
 --- !u!114 &240609731934203533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +386,19 @@ MonoBehaviour:
     m_ActionId: b596c8c0-568f-4696-ba61-e6da94831800
     m_ActionName: Movement/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7108402953798548452}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: a8212139-82aa-452d-8b2f-f6988678c43e
     m_ActionName: Movement/Dash
   - m_PersistentCalls:
