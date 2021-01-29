@@ -1,4 +1,5 @@
 using System;
+using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,17 @@ public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private SurfaceEffector2D sideWallLeft, sideWallRight;
 
-	public float speed = 1f;
-	public float maxSpeed = 10f;
-	public float jumpStrength = 4f;
+	public float speed = 1;
+	public float maxSpeed = 10;
+	public float jumpStrength = 4;
 	public float jumpSensitivity = 1f;
-	public float dashStrength = 3f;
-	public float wallJumpStrength = 40f;
+	public float dashStrength = 3;
+	public float wallJumpStrength = 40;
+	public float wallJumpVerticalBoost = 10;
 	public float wallSensitivity = 1f;
 	public LayerMask groundLayer, wallLayer;
+	[SerializeField]
+	PlayerParticles playerParticles;
 
 	public float fallMultiplier = 2.5f;
 
@@ -27,12 +31,9 @@ public class PlayerController : MonoBehaviour
 	private bool canWallJump;
 	private Rigidbody2D rb;
 
-	private BoxCollider2D groundTrigger;
-
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		groundTrigger = GetComponentInChildren<BoxCollider2D>();
 	}
 
 	private void FixedUpdate()
@@ -45,7 +46,6 @@ public class PlayerController : MonoBehaviour
 		
 		//Check if grounded       
 		var hitGround = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
-
 
 		isGrounded = false;
 		if (hitGround.collider != null)
@@ -71,6 +71,15 @@ public class PlayerController : MonoBehaviour
 			AudioController.Instance.PlaySound("Jump");
 			rb.velocity += Vector2.up * jumpStrength;
 			//rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
+
+			if (playerParticles == null)
+			{
+				Debug.LogWarning("dustParticle on jump is not set!");
+				return;
+			}
+
+			Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
+			Debug.Log("IsJumping...");
 		}
 		
 		//Better jump (increased velocity when moving down)
@@ -99,13 +108,13 @@ public class PlayerController : MonoBehaviour
 			{
 				AudioController.Instance.PlaySound("WallJump");
 				rb.velocity = new Vector2(4, 4);
-				rb.AddForce(new Vector2(wallJumpStrength, 15), ForceMode2D.Impulse);
+				rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
 			}
 			else if (transform.position.x > 0)
 			{
 				AudioController.Instance.PlaySound("WallJump");
 				rb.velocity = new Vector2(-4, 4);
-				rb.AddForce(new Vector2(wallJumpStrength * -1, 15), ForceMode2D.Impulse);
+				rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
 			}
 		}
 	}
@@ -113,7 +122,8 @@ public class PlayerController : MonoBehaviour
 	public void OnDash(InputAction.CallbackContext inputAction)
 	{
 		isDashing = inputAction.ReadValue<float>() == 1f;
-		if(isDashing && isGrounded)
+		if (isDashing && isGrounded)
+		{
 			if (horizontalInput > 0.01)
 			{
 				AudioController.Instance.PlaySound("Dash");
@@ -122,23 +132,10 @@ public class PlayerController : MonoBehaviour
 			else if (horizontalInput < -0.01)
 			{
 				AudioController.Instance.PlaySound("Dash");
-				rb.AddForce(new Vector2(dashStrength * -1, 0), ForceMode2D.Impulse); 
+				rb.AddForce(new Vector2(dashStrength * -1, 0), ForceMode2D.Impulse);
 			}
+		}
 	}
-
-	// void OnCollisionEnter2D(Collision2D other)
-	// {
-	// 	if (!isGrounded && other.transform.CompareTag("Wall"))
-	// 		canWallJump = true;
-	// 	else
-	// 		canWallJump = false;
-	// }
-	
-	// void OnCollisionExit2D(Collision2D other)
-	// {
-	// 	if (other.transform.CompareTag("Wall"))
-	// 		canWallJump = false;
-	// }
 
 	public void Die()
 	{
