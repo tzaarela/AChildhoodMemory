@@ -38,23 +38,38 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		//Move
+		Move();
+		CheckIfGrounded();
+		WallJump();
+		Jump();
+		CheckIfCornered();
+		
+		//Better jump (increased velocity when moving down)
+		if (rb.velocity.y < 0)
+			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
+	}
+
+	private void Move() 
+	{
 		if (Mathf.Abs(rb.velocity.x) < maxSpeed)
 			rb.velocity += new Vector2(horizontalInput * speed, 0);
 		// var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
 		// rb.velocity = clampedVector;
-		
-		//Check if grounded       
+	}
+
+	private void CheckIfGrounded()
+	{
 		var hitGround = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
 
 		isGrounded = false;
 		if (hitGround.collider != null)
 		{
-			//Debug.Log("IsGrounded...");
 			isGrounded = true;
 		}
-
-		//Wall Jump
+	}
+	
+	private void WallJump()
+	{
 		var hitWallLeft = Physics2D.Raycast(transform.position, Vector2.left, wallSensitivity, wallLayer);
 		var hitWallRight = Physics2D.Raycast(transform.position, Vector2.right, wallSensitivity, wallLayer);
 
@@ -62,9 +77,11 @@ public class PlayerController : MonoBehaviour
 		if (hitWallLeft.collider != null || hitWallRight.collider != null)
 		{
 			canWallJump = true;
-		}
+		}	
+	}
 
-		//Jump
+	private void Jump()
+	{
 		if(isJumping && isGrounded)
 		{
 			//Debug.Log("IsJumping...");
@@ -72,21 +89,19 @@ public class PlayerController : MonoBehaviour
 			rb.velocity += Vector2.up * jumpStrength;
 			//rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
 
-            if (playerParticles.jumpDustParticleSystem == null)
-            {
-                Debug.LogWarning("dustParticle on jump is not set!");
-                return;
-            }
+			if (playerParticles.jumpDustParticleSystem == null)
+			{
+				Debug.LogWarning("dustParticle on jump is not set!");
+				return;
+			}
 
 			Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
 			Debug.Log("IsJumping...");
-		}
-		
-		//Better jump (increased velocity when moving down)
-		if (rb.velocity.y < 0)
-			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
+		}	
+	}
 
-		//When in Corner
+	private void CheckIfCornered()
+	{
 		bool isInCorner = canWallJump && isGrounded;
 		sideWallLeft.enabled = !isInCorner;
 		sideWallRight.enabled = !isInCorner;

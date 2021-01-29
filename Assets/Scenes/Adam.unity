@@ -154,6 +154,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!252 &483743344 stripped
+SurfaceEffector2D:
+  m_CorrespondingSourceObject: {fileID: 6295380810012589233, guid: 127e1881877746246a481b6ac2a40a07, type: 3}
+  m_PrefabInstance: {fileID: 1394752835}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &495205591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -171,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56189294435967400, guid: d9fe2f2dfca7b0a4fa29db2de8a65b73, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.53699934
+      value: 0.5364977
       objectReference: {fileID: 0}
     - target: {fileID: 56189294435967400, guid: d9fe2f2dfca7b0a4fa29db2de8a65b73, type: 3}
       propertyPath: m_LocalPosition.y
@@ -215,11 +220,11 @@ PrefabInstance:
       objectReference: {fileID: 1724095964}
     - target: {fileID: 56189296015071558, guid: d9fe2f2dfca7b0a4fa29db2de8a65b73, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.2558842
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 56189296015071558, guid: d9fe2f2dfca7b0a4fa29db2de8a65b73, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.099999905
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9fe2f2dfca7b0a4fa29db2de8a65b73, type: 3}
@@ -559,6 +564,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7108402953798548452, guid: e326dfc234f394a4dba8d990ee7c1cad, type: 3}
+      propertyPath: sideWallLeft
+      value: 
+      objectReference: {fileID: 483743344}
+    - target: {fileID: 7108402953798548452, guid: e326dfc234f394a4dba8d990ee7c1cad, type: 3}
+      propertyPath: sideWallRight
+      value: 
+      objectReference: {fileID: 1963671484}
+    - target: {fileID: 7108402953798548452, guid: e326dfc234f394a4dba8d990ee7c1cad, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e326dfc234f394a4dba8d990ee7c1cad, type: 3}
 --- !u!4 &1244891192 stripped
@@ -814,6 +831,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30da3992f57b59849be06af6def92d07, type: 3}
+--- !u!252 &1963671484 stripped
+SurfaceEffector2D:
+  m_CorrespondingSourceObject: {fileID: 8494871888500052358, guid: 0a4847eb93d276f41b124d0393a4abf5, type: 3}
+  m_PrefabInstance: {fileID: 1405386514}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1974039234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5542783840380773399, guid: 30da3992f57b59849be06af6def92d07, type: 3}

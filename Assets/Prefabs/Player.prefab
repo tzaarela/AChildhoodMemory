@@ -315,6 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35c9506019176d459e99e4150e28661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sideWallLeft: {fileID: 0}
+  sideWallRight: {fileID: 0}
   speed: 0.5
   maxSpeed: 5
   jumpStrength: 9
@@ -322,11 +324,15 @@ MonoBehaviour:
   dashStrength: 4
   wallJumpStrength: 10
   wallJumpVerticalBoost: 10
+  wallSensitivity: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
   playerParticles:
-    jumpDustParticleSystem: {fileID: 8008817529728470359, guid: f7f4d3b2b60e8204f8e118182cb2f7c5, type: 3}
+    jumpDustParticleSystem: {fileID: 0}
   fallMultiplier: 3.1
 --- !u!114 &240609731934203533
 MonoBehaviour:
