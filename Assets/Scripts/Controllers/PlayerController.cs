@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -31,9 +32,14 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //Move
-        rb.velocity += new Vector2(horizontalInput * speed, 0);
-        var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
-        rb.velocity = clampedVector;
+        if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+            rb.velocity += new Vector2(horizontalInput * speed, 0);
+        Debug.Log(rb.velocity);
+        // var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
+        // Debug.Log(clampedVector);
+        // rb.velocity = clampedVector;
+        
+        
         
         //Check if grounded       
         var hit = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
@@ -48,13 +54,15 @@ public class PlayerController : MonoBehaviour
         //Jump
         if(isJumping && isGrounded)
         {
-            Debug.Log("IsJumping...");
+            //Debug.Log("IsJumping...");
             AudioController.Instance.PlaySound("Jump");
-            //rb.velocity += Vector2.up * jumpStrength;
-            rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
+            rb.velocity += Vector2.up * jumpStrength;
+            //rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
         }
-
-        //BetterJump();
+        
+        //Better jump (increased velocity when moving down)
+        if (rb.velocity.y < 0)
+            rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
     }
 
     public void OnMove(InputAction.CallbackContext inputAction)
@@ -73,13 +81,13 @@ public class PlayerController : MonoBehaviour
             {
                 AudioController.Instance.PlaySound("WallJump");
                 rb.velocity = new Vector2(4, 4);
-                rb.AddForce(new Vector2(wallJumpStrength, 25), ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(wallJumpStrength, 15), ForceMode2D.Impulse);
             }
             else if (transform.position.x > 0)
             {
                 AudioController.Instance.PlaySound("WallJump");
                 rb.velocity = new Vector2(-4, 4);
-                rb.AddForce(new Vector2(wallJumpStrength * -1, 25), ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(wallJumpStrength * -1, 15), ForceMode2D.Impulse);
             }
         }
     }
@@ -113,13 +121,6 @@ public class PlayerController : MonoBehaviour
         if (other.transform.CompareTag("Wall"))
             canWallJump = false;
     }
-    
-    void BetterJump()
-    {
-        if (rb.velocity.y < 0)
-            rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
-    }
-    
 
     public void Die()
     {
