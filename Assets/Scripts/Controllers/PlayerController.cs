@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,66 +6,123 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	public float speed = 1;
-	public float maxSpeed = 10;
-	public float jumpStrength = 4;
-	public float jumpSensitivity = 1f;
-	public LayerMask groundLayer;
+    public float speed = 1;
+    public float maxSpeed = 10;
+    public float jumpStrength = 4;
+    public float jumpSensitivity = 1f;
+    public float dashStrength = 3;
+    public float wallJumpStrength = 40;
+    public LayerMask groundLayer;
 
-	private float horizontalInput;
-	private bool isJumping;
-	private bool isGrounded;
-	private bool isDashing;
-	private Rigidbody2D rb;
+    public float fallMultiplier = 2.5f;
 
-	private void Awake()
-	{
-		rb = GetComponent<Rigidbody2D>();
-	}
+    private float horizontalInput;
+    private bool isJumping;
+    private bool isGrounded;
+    private bool isDashing;
+    private bool canWallJump;
+    private Rigidbody2D rb;
 
-	private void FixedUpdate()
-	{
-		//Move
-		rb.velocity += new Vector2(horizontalInput * speed, 0);
-		var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
-		rb.velocity = clampedVector;
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
-		//Check if grounded       
-		var hit = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
+    private void FixedUpdate()
+    {
+        //Move
+        rb.velocity += new Vector2(horizontalInput * speed, 0);
+        var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
+        rb.velocity = clampedVector;
+        
+        //Check if grounded       
+        var hit = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
 
-		isGrounded = false;
-		if (hit.collider != null)
-		{
-			Debug.Log("IsGrounded...");
-			isGrounded = true;
-		}
+        isGrounded = false;
+        if (hit.collider != null)
+        {
+            //Debug.Log("IsGrounded...");
+            isGrounded = true;
+        }
 
-		//Jump
-		if(isJumping && isGrounded)
-		{
-			Debug.Log("IsJumping...");
-			rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
-		}
-	}
+        //Jump
+        if(isJumping && isGrounded)
+        {
+            Debug.Log("IsJumping...");
+            AudioController.Instance.PlaySound("Jump");
+            //rb.velocity += Vector2.up * jumpStrength;
+            rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
+        }
 
-	public void OnMove(InputAction.CallbackContext inputAction)
-	{
-		Debug.Log("Moving...");
-		horizontalInput = inputAction.ReadValue<float>();
-	}
+        //BetterJump();
+    }
 
-	public void OnJump(InputAction.CallbackContext inputAction)
-	{
-		isJumping = inputAction.ReadValue<float>() == 1f;
-	}
+    public void OnMove(InputAction.CallbackContext inputAction)
+    {
+        //Debug.Log("Moving...");
+        horizontalInput = inputAction.ReadValue<float>();
+    }
 
-	public void OnDash(InputAction.CallbackContext inputAction)
-	{
-		isDashing = inputAction.ReadValue<float>() == 1f;
-	}
+    public void OnJump(InputAction.CallbackContext inputAction)
+    {
+        isJumping = inputAction.ReadValue<float>() == 1f;
+        
+        if (canWallJump && isJumping)
+        {
+            if (transform.position.x < 0)
+            {
+                AudioController.Instance.PlaySound("WallJump");
+                rb.velocity = new Vector2(4, 4);
+                rb.AddForce(new Vector2(wallJumpStrength, 25), ForceMode2D.Impulse);
+            }
+            else if (transform.position.x > 0)
+            {
+                AudioController.Instance.PlaySound("WallJump");
+                rb.velocity = new Vector2(-4, 4);
+                rb.AddForce(new Vector2(wallJumpStrength * -1, 25), ForceMode2D.Impulse);
+            }
+        }
+    }
+    
+    public void OnDash(InputAction.CallbackContext inputAction)
+    {
+        isDashing = inputAction.ReadValue<float>() == 1f;
+        if(isDashing && isGrounded)
+            if (horizontalInput > 0.01)
+            {
+                AudioController.Instance.PlaySound("Dash");
+                rb.AddForce(new Vector2(dashStrength, 0), ForceMode2D.Impulse);
+            }
+            else if (horizontalInput < -0.01)
+            {
+                AudioController.Instance.PlaySound("Dash");
+                rb.AddForce(new Vector2(dashStrength * -1, 0), ForceMode2D.Impulse); 
+            }
+    }
 
-	public void Die()
-	{
-		GameController.Instance.OnPlayerDie.Invoke(this);
-	}
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (!isGrounded && other.transform.CompareTag("Wall"))
+            canWallJump = true;
+        else
+            canWallJump = false;
+    }
+    
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.transform.CompareTag("Wall"))
+            canWallJump = false;
+    }
+    
+    void BetterJump()
+    {
+        if (rb.velocity.y < 0)
+            rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
+    }
+    
+
+    public void Die()
+    {
+        GameController.Instance.OnPlayerDie.Invoke(this);
+    }
 }

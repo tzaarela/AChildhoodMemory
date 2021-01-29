@@ -47,11 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   run: {fileID: 0}
   runVolume: 1
-  jump: {fileID: 0}
+  jump: {fileID: 8300000, guid: e92e37d036f50a74f917b455c027a5a8, type: 3}
   jumpVolume: 1
-  dash: {fileID: 0}
+  dash: {fileID: 8300000, guid: e92e37d036f50a74f917b455c027a5a8, type: 3}
   dashVolume: 1
-  wallJump: {fileID: 0}
+  wallJump: {fileID: 8300000, guid: e92e37d036f50a74f917b455c027a5a8, type: 3}
   wallJumpVolume: 1
   effectsAudioSource: {fileID: 4271776487663706911}
 --- !u!82 &4271776487663706911
@@ -66,7 +66,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
