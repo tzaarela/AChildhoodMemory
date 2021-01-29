@@ -14,7 +14,7 @@ public class GameController : ScriptableObject
 	public float platformDistance = 10;
 
 	public Action<PlayerController> OnPlayerDie;
-	public Action OnGameCompleted;
+	public Action<PlayerController> OnGameCompleted;
 
 	public Spawnpoint spawnpoint;
 
@@ -39,15 +39,17 @@ public class GameController : ScriptableObject
 		cameraStartPosition = mainCamera.transform.position;
 	}
 
-	private void HandleOnGameCompleted()
+	private void HandleOnGameCompleted(PlayerController playerController)
 	{
 		Debug.Log("Game completed!");
+		playerController.transform.position = spawnpoint.transform.position;
+		CameraController.Instance.ResetCameraPosition(playerController);
 	}
 
 	private void HandleOnPlayerDie(PlayerController playerController)
 	{
 		Debug.Log("Player died!");
-		playerController.transform.position = GameController.Instance.spawnpoint.transform.position;
+		playerController.transform.position = spawnpoint.transform.position;
 		CameraController.Instance.ResetCameraPosition(playerController);
 	}
 }
