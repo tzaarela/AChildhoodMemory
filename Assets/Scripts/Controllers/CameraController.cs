@@ -22,10 +22,10 @@ public class CameraController : MonoBehaviour
 
 	public void ResetCameraPosition(PlayerController playerController) 
 	{
-		GameObject go = new GameObject();
-		Transform target = go.transform;
+		// GameObject go = new GameObject();
+		// Transform target = go.transform;
 
-		target.position = playerController.transform.position + new Vector3(0, cameraRespawnOffset, 0);
-		CVCam.OnTargetObjectWarped(target, Vector3.down * 100);
+		// target.position = playerController.transform.position + new Vector3(0, cameraRespawnOffset, 0);
+		CVCam.OnTargetObjectWarped(playerController.transform, Vector3.down * 1000);
 	}
 }
