@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 	public static CameraController Instance;
+	public float cameraRespawnOffset = 1f;
 
 	private Cinemachine.CinemachineVirtualCamera CVCam;
 
@@ -21,6 +22,10 @@ public class CameraController : MonoBehaviour
 
 	public void ResetCameraPosition(PlayerController playerController) 
 	{
-		CVCam.OnTargetObjectWarped(playerController.transform, Vector3.down * 100);
+		GameObject go = new GameObject();
+		Transform target = go.transform;
+
+		target.position = playerController.transform.position + new Vector3(0, cameraRespawnOffset, 0);
+		CVCam.OnTargetObjectWarped(target, Vector3.down * 100);
 	}
 }

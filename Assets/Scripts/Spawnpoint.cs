@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class Spawnpoint : MonoBehaviour
 {
-    public float respawnTime;
+    public int id = 1;
+    public float respawnTime = 3;
 }

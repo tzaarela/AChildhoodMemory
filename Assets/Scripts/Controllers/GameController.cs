@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,13 +18,13 @@ public class GameController : ScriptableObject
 	public Action<PlayerController> OnCheckpointReached;
 	public Action<PlayerController> OnGameCompleted;
 
-	public Spawnpoint[] spawnpoints;
 	public GameObject confetti;
 
 	[SerializeField]
 	private int checkpointsReached;
 
 	private Camera mainCamera;
+	private Spawnpoint[] spawnpoints;
 	private Vector3 cameraStartPosition;
 	private Coroutine WaitForCamera;
 
@@ -36,9 +37,12 @@ public class GameController : ScriptableObject
 		OnPlayerDie += HandleOnPlayerDie;
 		OnCheckpointReached += HandleOnCheckpointReached;
 		OnGameCompleted += HandleOnGameCompleted;
-		
-		// if (spawnpoints.Length() == 0)
-		// 	Debug.LogError("No spawnpoints found in scene!");
+
+		spawnpoints = FindObjectsOfType<Spawnpoint>().OrderBy(x => x.id).ToArray();
+		if (spawnpoints.Length == 0)
+        {
+			Debug.LogError("No spawnpoints found in scene!");
+        }
 
 		mainCamera = Camera.main;
 		cameraStartPosition = mainCamera.transform.position;
@@ -49,7 +53,6 @@ public class GameController : ScriptableObject
 		Debug.Log("Checkpoint reached!");
 		checkpointsReached += 1;
 		Instantiate(confetti, playerController.transform.position, Quaternion.identity);
-		
 		playerController.StartCheckpointReached();
 	}
 	

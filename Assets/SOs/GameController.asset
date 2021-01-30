@@ -15,6 +15,7 @@ MonoBehaviour:
   platformCount: 10
   platformDistance: 10
   spawnpoints:
-  - {fileID: 3518581032420901990, guid: 25f7e0cdd1d48ec4fb77cc9145ca9e30, type: 3}
-  - {fileID: 4386213699940743006, guid: ed1f64c357d462f45b4209a38a2e4611, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   confetti: {fileID: 3286029355515145568, guid: b6709219aec2b4f40863c8318b25edd7, type: 3}
+  checkpointsReached: 1
