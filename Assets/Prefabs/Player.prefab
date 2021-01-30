@@ -292,6 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2688963287779507200}
   - component: {fileID: 4866624903069230441}
+  - component: {fileID: 497691474}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -364,6 +365,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &497691474
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694743248383339782}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dfc2d7771b187a149a328fae871d431d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4576750932090154002
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,16 +457,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sideWallLeft: {fileID: 0}
   sideWallRight: {fileID: 0}
-  playerParticles:
-    jumpDustParticleSystem: {fileID: 19826678, guid: c05e92eaee7a00844867e5edc8e0dde1, type: 3}
+  playerPosition: {x: 0, y: 0, z: 0}
   speed: 0.5
   maxSpeed: 5
   jumpStrength: 8
   jumpSensitivity: 1
   dashStrength: 2
   wallJumpStrength: 1
-  wallJumpVerticalBoost: 2
-  wallSensitivity: 1
+  wallJumpVerticalBoost: 3
+  wallSensitivity: 0.2
   fallMultiplier: 3.1
   groundLayer:
     serializedVersion: 2
@@ -454,6 +473,9 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
+  walkSensitivity: 1
+  playerParticles:
+    jumpDustParticleSystem: {fileID: 19826678, guid: c05e92eaee7a00844867e5edc8e0dde1, type: 3}
 --- !u!114 &240609731934203533
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,11 +10,9 @@ public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private SurfaceEffector2D sideWallLeft, sideWallRight;
 
-	[SerializeField]
-	PlayerParticles playerParticles;
 
+	[Header("Player")]
 	public Vector3 playerPosition;
-
 	public float speed = 1;
 	public float maxSpeed = 10;
 	public float jumpStrength = 4;
@@ -26,6 +24,13 @@ public class PlayerController : MonoBehaviour
 	public float fallMultiplier = 2.5f;
 	public LayerMask groundLayer, wallLayer;
 
+	[Header("Animations")]
+	public float walkSensitivity = 1f;
+
+	[Header("Particles")]
+	[SerializeField]
+	PlayerParticles playerParticles;
+
 	private float horizontalInput;
 	private bool isCornered;
 	private bool isJumping;
@@ -33,10 +38,14 @@ public class PlayerController : MonoBehaviour
 	private bool isDashing;
 	private bool canWallJump;
 	private Rigidbody2D rb;
+	private Animator animator;
+	private SpriteRenderer spriteRenderer;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		animator = GetComponentInChildren<Animator>();
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 	}
 
 	private void FixedUpdate()
@@ -50,14 +59,22 @@ public class PlayerController : MonoBehaviour
 		//Better jump (increased velocity when moving down)
 		if (rb.velocity.y < 0)
 			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
+
+		if (isGrounded && Mathf.Abs(rb.velocity.x) > walkSensitivity)
+			animator.SetBool("isMoving", true);
+		else
+			animator.SetBool("isMoving", false);
+
+		if (rb.velocity.x < 0)
+			spriteRenderer.flipX = horizontalInput == -1;
+		else
+			spriteRenderer.flipX = horizontalInput == -1;
 	}
 
 	private void Move() 
 	{
 		if (Mathf.Abs(rb.velocity.x) < maxSpeed)
 			rb.velocity += new Vector2(horizontalInput * speed, 0);
-		// var clampedVector = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
-		// rb.velocity = clampedVector;
 	}
 
 	private void CheckIfGrounded()
@@ -94,12 +111,15 @@ public class PlayerController : MonoBehaviour
 			if (transform.position.x < 0)
 			{
 				AudioController.Instance.PlaySound("WallJump");
+
+				animator.SetTrigger("onSideJump");
 				rb.velocity = new Vector2(4, 4);
 				rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
 			}
 			else if (transform.position.x > 0)
 			{
 				AudioController.Instance.PlaySound("WallJump");
+				animator.SetTrigger("onSideJump");
 				rb.velocity = new Vector2(-4, 4);
 				rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
 			}
@@ -112,6 +132,7 @@ public class PlayerController : MonoBehaviour
 			//Debug.Log("IsJumping...");
 			AudioController.Instance.PlaySound("Jump");
 			rb.velocity += Vector2.up * jumpStrength;
+			animator.SetTrigger("onJump");
 			//rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
 
 			if (playerParticles.jumpDustParticleSystem == null)
@@ -142,7 +163,9 @@ public class PlayerController : MonoBehaviour
 	public void OnMove(InputAction.CallbackContext inputAction)
 	{
 		//Debug.Log("Moving...");
+		
 		horizontalInput = inputAction.ReadValue<float>();
+			
 	}
 
 	public void OnJump(InputAction.CallbackContext jumpAction)
@@ -157,11 +180,13 @@ public class PlayerController : MonoBehaviour
 		{
 			if (horizontalInput > 0.01)
 			{
+				animator.SetTrigger("onDash");
 				AudioController.Instance.PlaySound("Dash");
 				rb.AddForce(new Vector2(dashStrength, 0), ForceMode2D.Impulse);
 			}
 			else if (horizontalInput < -0.01)
 			{
+				animator.SetTrigger("onDash");
 				AudioController.Instance.PlaySound("Dash");
 				rb.AddForce(new Vector2(dashStrength * -1, 0), ForceMode2D.Impulse);
 			}
