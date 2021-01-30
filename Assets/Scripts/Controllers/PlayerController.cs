@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
 	public float maxSpeed = 10;
 	public float jumpStrength = 4;
 	public float jumpSensitivity = 1f;
+	public float doubleJumpStrength = 4;
+	public float doubleJumpDuration = 1;
 	public float dashStrength = 3;
 	public float wallJumpStrength = 40;
 	public float wallJumpVerticalBoost = 10;
@@ -38,11 +40,13 @@ public class PlayerController : MonoBehaviour
 	private bool isGrounded;
 	private bool isDashing;
 	private bool canWallJump;
+	private bool canDoubleJump;
 	private Rigidbody2D rb;
 	private Animator animator;
 	private SpriteRenderer spriteRenderer;
+    
 
-	private void Awake()
+    private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponentInChildren<Animator>();
@@ -166,7 +170,16 @@ public class PlayerController : MonoBehaviour
 
 			Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
 			Debug.Log("IsJumping...");
-		}	
+		}
+
+		else if (canDoubleJump && jumpAction.performed)
+        {
+			AudioController.Instance.PlaySound("Jump");
+			rb.velocity = new Vector2(rb.velocity.x, 0);
+			rb.velocity += Vector2.up * doubleJumpStrength;
+			canDoubleJump = false;
+			animator.SetTrigger("onJump");
+		}
 	}
 
 	private void ImproveJump()
@@ -175,12 +188,23 @@ public class PlayerController : MonoBehaviour
 			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
 	}
 
+	public void GiveDoubleJump()
+    {
+		canDoubleJump = true;
+		StartCoroutine(PowerDrainCoroutine());
+    }
+
+	public IEnumerator PowerDrainCoroutine()
+    {
+		yield return new WaitForSeconds(doubleJumpDuration);
+		canDoubleJump = false;
+    }
+
+
 	public void OnMove(InputAction.CallbackContext inputAction)
 	{
 		//Debug.Log("Moving...");
-		
 		horizontalInput = inputAction.ReadValue<float>();
-			
 	}
 
 	public void OnJump(InputAction.CallbackContext jumpAction)
