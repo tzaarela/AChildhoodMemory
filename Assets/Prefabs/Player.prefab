@@ -462,8 +462,8 @@ MonoBehaviour:
   maxSpeed: 5
   jumpStrength: 8
   jumpSensitivity: 1
-  doubleJumpStrength: 4
-  doubleJumpDuration: 1
+  doubleJumpStrength: 8
+  doubleJumpDuration: 0.5
   dashStrength: 2
   wallJumpStrength: 1
   wallJumpVerticalBoost: 3
