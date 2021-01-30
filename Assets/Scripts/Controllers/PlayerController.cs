@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	PlayerParticles playerParticles;
 
+	public Vector3 playerPosition;
+
 	public float speed = 1;
 	public float maxSpeed = 10;
 	public float jumpStrength = 4;
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		playerPosition = transform.position;
 		Move();
 		CheckIfGrounded();
 		CheckForWalls();
