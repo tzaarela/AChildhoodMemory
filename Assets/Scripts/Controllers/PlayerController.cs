@@ -41,12 +41,12 @@ public class PlayerController : MonoBehaviour
 	private bool isDashing;
 	private bool canWallJump;
 	private bool canDoubleJump;
+	private bool wallJumpLeft, wallJumpRight;
 	private Rigidbody2D rb;
 	private Animator animator;
 	private SpriteRenderer spriteRenderer;
-    
 
-    private void Awake()
+	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponentInChildren<Animator>();
@@ -68,9 +68,9 @@ public class PlayerController : MonoBehaviour
 			animator.SetBool("isMoving", false);
 
 		if (rb.velocity.x < 0)
-			spriteRenderer.flipX = horizontalInput == -1;
+			spriteRenderer.flipX = true;
 		else
-			spriteRenderer.flipX = horizontalInput == -1;
+			spriteRenderer.flipX = false;
 
 	}
 
@@ -110,7 +110,11 @@ public class PlayerController : MonoBehaviour
 				sideWallLeft.enabled = false;
 				sideWallRight.enabled = false;
 			}
-		}	
+		}
+
+		wallJumpLeft = hitWallLeft.collider != null;
+		wallJumpRight = hitWallRight.collider != null;
+
 	}
 
 	private void CheckIfCornered()
@@ -135,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
 		if (canWallJump && !isGrounded && jumpAction.performed)
 		{
-			if (transform.position.x < 0)
+			if (wallJumpLeft)
 			{
 				AudioController.Instance.PlaySound("WallJump");
 
@@ -143,7 +147,7 @@ public class PlayerController : MonoBehaviour
 				rb.velocity = new Vector2(4, 4);
 				rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
 			}
-			else if (transform.position.x > 0)
+			else if (wallJumpRight)
 			{
 				AudioController.Instance.PlaySound("WallJump");
 				animator.SetTrigger("onSideJump");
@@ -173,7 +177,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		else if (canDoubleJump && jumpAction.performed)
-        {
+		{
 			AudioController.Instance.PlaySound("Jump");
 			rb.velocity = new Vector2(rb.velocity.x, 0);
 			rb.velocity += Vector2.up * doubleJumpStrength;
@@ -187,18 +191,18 @@ public class PlayerController : MonoBehaviour
 		if (rb.velocity.y < 0)
 			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
 	}
-
-	public void GiveDoubleJump()
-    {
+	
+public void GiveDoubleJump()
+	{
 		canDoubleJump = true;
 		StartCoroutine(PowerDrainCoroutine());
-    }
+	}
 
 	public IEnumerator PowerDrainCoroutine()
-    {
+	{
 		yield return new WaitForSeconds(doubleJumpDuration);
 		canDoubleJump = false;
-    }
+	}
 
 
 	public void OnMove(InputAction.CallbackContext inputAction)
@@ -246,7 +250,7 @@ public class PlayerController : MonoBehaviour
 	public IEnumerator CheckpointReached()
 	{
 		float time = 0;
-		float duration = 0.4f;
+		float duration = 0.1f;
 		float startValue = 0.6f;
 		float endValue = 0.1f;
 		Time.timeScale = startValue;
@@ -258,7 +262,7 @@ public class PlayerController : MonoBehaviour
 			yield return null;
 		}
 
-		yield return new WaitForSeconds(0.4f);
+		yield return new WaitForSeconds(0.1f);
 		Time.timeScale = 1;
 		checkpointText.SetActive(false);
 	}
