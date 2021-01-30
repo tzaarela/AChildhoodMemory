@@ -14,9 +14,13 @@ public class GameController : ScriptableObject
 	public float platformDistance = 10;
 
 	public Action<PlayerController> OnPlayerDie;
+	public Action<PlayerController> OnCheckpointReached;
 	public Action<PlayerController> OnGameCompleted;
 
-	public Spawnpoint spawnpoint;
+	public Spawnpoint[] spawnpoints;
+	public GameObject confetti;
+
+	int checkpointsReached = 0;
 
 	private Camera mainCamera;
 	private Vector3 cameraStartPosition;
@@ -28,28 +32,37 @@ public class GameController : ScriptableObject
 			Instance = this;
 
 		OnPlayerDie += HandleOnPlayerDie;
+		OnCheckpointReached += HandleOnCheckpointReached;
 		OnGameCompleted += HandleOnGameCompleted;
-
-		spawnpoint = FindObjectOfType<Spawnpoint>();
-
-		if (spawnpoint == null)
-			Debug.LogError("No spawnpoint found in scene!");
+		
+		// if (spawnpoints.Length() == 0)
+		// 	Debug.LogError("No spawnpoints found in scene!");
 
 		mainCamera = Camera.main;
 		cameraStartPosition = mainCamera.transform.position;
 	}
 
+	private void HandleOnCheckpointReached(PlayerController playerController)
+	{
+		Debug.Log("Checkpoint reached!");
+		checkpointsReached += 1;
+		Instantiate(confetti, playerController.transform.position, Quaternion.identity);
+		
+		playerController.StartCheckpointReached();
+	}
+	
+
 	private void HandleOnGameCompleted(PlayerController playerController)
 	{
 		Debug.Log("Game completed!");
-		playerController.transform.position = spawnpoint.transform.position;
-		CameraController.Instance.ResetCameraPosition(playerController);
+		//playerController.transform.position = spawnpoints[0].transform.position;
+		//CameraController.Instance.ResetCameraPosition(playerController);
 	}
 
 	private void HandleOnPlayerDie(PlayerController playerController)
 	{
 		Debug.Log("Player died!");
-		playerController.transform.position = spawnpoint.transform.position;
+		playerController.transform.position = spawnpoints[checkpointsReached].transform.position;
 		CameraController.Instance.ResetCameraPosition(playerController);
 	}
 }

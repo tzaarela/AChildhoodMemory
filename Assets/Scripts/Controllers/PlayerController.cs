@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private SurfaceEffector2D sideWallLeft, sideWallRight;
 
-
 	[Header("Player")]
 	public Vector3 playerPosition;
 	public float speed = 1;
@@ -28,9 +27,11 @@ public class PlayerController : MonoBehaviour
 	public float walkSensitivity = 1f;
 
 	[Header("Particles")]
-	[SerializeField]
-	PlayerParticles playerParticles;
-
+	[SerializeField] PlayerParticles playerParticles;
+	
+	[Header("UI")]
+	public GameObject checkpointText = null;
+	
 	private float horizontalInput;
 	private bool isCornered;
 	private bool isJumping;
@@ -53,13 +54,10 @@ public class PlayerController : MonoBehaviour
 		playerPosition = transform.position;
 		Move();
 		CheckIfGrounded();
+		//CheckIfCornered();
 		CheckForWalls();
-		CheckIfCornered();
+		ImproveJump();
 		
-		//Better jump (increased velocity when moving down)
-		if (rb.velocity.y < 0)
-			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
-
 		if (isGrounded && Mathf.Abs(rb.velocity.x) > walkSensitivity)
 			animator.SetBool("isMoving", true);
 		else
@@ -69,6 +67,7 @@ public class PlayerController : MonoBehaviour
 			spriteRenderer.flipX = horizontalInput == -1;
 		else
 			spriteRenderer.flipX = horizontalInput == -1;
+
 	}
 
 	private void Move() 
@@ -97,9 +96,33 @@ public class PlayerController : MonoBehaviour
 		if (hitWallLeft.collider != null || hitWallRight.collider != null)
 		{
 			canWallJump = true;
+			if (rb.velocity.y < -0.05 && !isGrounded)
+			{
+				sideWallLeft.enabled = true;
+				sideWallRight.enabled = true;
+			}
+			else
+			{
+				sideWallLeft.enabled = false;
+				sideWallRight.enabled = false;
+			}
 		}	
 	}
 
+	private void CheckIfCornered()
+	{
+		isCornered = canWallJump && isGrounded;
+
+		if(sideWallLeft == null || sideWallRight == null)
+		{
+			Debug.LogError("SideWalls not assigned in PlayerController");
+			return;
+		}
+		
+		sideWallLeft.enabled = !isCornered;
+		sideWallRight.enabled = !isCornered;
+	}
+	
 	private void Jump(InputAction.CallbackContext jumpAction)
 	{
 		//if (!isJumping)
@@ -146,18 +169,10 @@ public class PlayerController : MonoBehaviour
 		}	
 	}
 
-	private void CheckIfCornered()
+	private void ImproveJump()
 	{
-		isCornered = canWallJump && isGrounded;
-
-		if(sideWallLeft == null || sideWallRight == null)
-        {
-			Debug.LogError("SideWalls not assigned in PlayerController");
-			return;
-        }
-
-		sideWallLeft.enabled = !isCornered;
-		sideWallRight.enabled = !isCornered;
+		if (rb.velocity.y < 0)
+			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
 	}
 
 	public void OnMove(InputAction.CallbackContext inputAction)
@@ -196,5 +211,31 @@ public class PlayerController : MonoBehaviour
 	public void Die()
 	{
 		GameController.Instance.OnPlayerDie.Invoke(this);
+	}
+
+	public void StartCheckpointReached()
+	{
+		checkpointText.SetActive(true);
+		StartCoroutine(CheckpointReached());
+	}
+	
+	public IEnumerator CheckpointReached()
+	{
+		float time = 0;
+		float duration = 0.4f;
+		float startValue = 0.6f;
+		float endValue = 0.1f;
+		Time.timeScale = startValue;
+
+		while (time < duration)
+		{
+			Time.timeScale = (Mathf.Lerp(startValue, endValue, time / duration));
+			time += Time.deltaTime;
+			yield return null;
+		}
+
+		yield return new WaitForSeconds(0.4f);
+		Time.timeScale = 1;
+		checkpointText.SetActive(false);
 	}
 }

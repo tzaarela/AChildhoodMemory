@@ -476,6 +476,7 @@ MonoBehaviour:
   walkSensitivity: 1
   playerParticles:
     jumpDustParticleSystem: {fileID: 19826678, guid: c05e92eaee7a00844867e5edc8e0dde1, type: 3}
+  checkpointText: {fileID: 0}
 --- !u!114 &240609731934203533
 MonoBehaviour:
   m_ObjectHideFlags: 0
