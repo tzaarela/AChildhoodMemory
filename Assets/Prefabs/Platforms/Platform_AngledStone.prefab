@@ -122,13 +122,12 @@ MonoBehaviour:
   m_SelfShadows: 0
   m_ApplyToSortingLayers: c547f518
   m_ShapePath:
-  - {x: -1.1371826, y: -0.045722485, z: 0}
-  - {x: 1.1388388, y: -0.04660368, z: 0}
-  - {x: 1.1388388, y: 0.20265925, z: 0}
-  - {x: -1.1388388, y: 0.20265925, z: 0}
-  m_ShapePathHash: -302071268
+  - {x: -0.4038484, y: -0.41570854, z: 0}
+  - {x: 0.4570558, y: -0.0004234314, z: 0}
+  - {x: -0.40173507, y: 0.4231186, z: 0}
+  m_ShapePathHash: -1495623329
   m_Mesh: {fileID: 0}
-  m_InstanceId: 30330
+  m_InstanceId: 31160
 --- !u!60 &7051741242046523445
 PolygonCollider2D:
   m_ObjectHideFlags: 0

@@ -20,7 +20,8 @@ public class GameController : ScriptableObject
 	public Spawnpoint[] spawnpoints;
 	public GameObject confetti;
 
-	int checkpointsReached = 0;
+	[SerializeField]
+	private int checkpointsReached;
 
 	private Camera mainCamera;
 	private Vector3 cameraStartPosition;
@@ -31,6 +32,7 @@ public class GameController : ScriptableObject
 		if (Instance != this)
 			Instance = this;
 
+		checkpointsReached = 0;
 		OnPlayerDie += HandleOnPlayerDie;
 		OnCheckpointReached += HandleOnCheckpointReached;
 		OnGameCompleted += HandleOnGameCompleted;
@@ -51,7 +53,6 @@ public class GameController : ScriptableObject
 		playerController.StartCheckpointReached();
 	}
 	
-
 	private void HandleOnGameCompleted(PlayerController playerController)
 	{
 		Debug.Log("Game completed!");

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5542783840380773396}
   - component: {fileID: 4990447264262789615}
   - component: {fileID: 737904012}
-  - component: {fileID: 3009307849632180157}
   - component: {fileID: 5867641202531123275}
   m_Layer: 6
   m_Name: Platform_Angled
@@ -129,28 +128,7 @@ MonoBehaviour:
   - {x: -1.0643041, y: -0.44409943, z: 0}
   m_ShapePathHash: 1467205944
   m_Mesh: {fileID: 0}
-  m_InstanceId: 29720
---- !u!50 &3009307849632180157
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5542783840380773394}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_InstanceId: 32128
 --- !u!60 &5867641202531123275
 PolygonCollider2D:
   m_ObjectHideFlags: 0
