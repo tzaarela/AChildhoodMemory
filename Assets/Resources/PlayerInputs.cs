@@ -122,7 +122,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""1D Axis_Gamepad"",
                     ""id"": ""88df2376-a973-496d-b69e-be4d1d5d3cc9"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -146,7 +146,40 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""a422cee1-a205-4162-9f2d-ed076fa5d96d"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis_Gamepad"",
+                    ""id"": ""ad1dd7ed-16f4-457e-b7a2-438f061f87db"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""0f9dbf44-b591-4c81-bb45-61876595d318"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d0a82c40-c45b-4ab3-bd6e-9dc730a13725"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
