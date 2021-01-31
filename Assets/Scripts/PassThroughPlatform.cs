@@ -5,11 +5,11 @@ using UnityEngine;
 public class PassThroughPlatform : MonoBehaviour
 {
 	[SerializeField]
-	private BoxCollider2D boxCol;
+	private BoxCollider2D boxCol = null;
 	[SerializeField]
 	private float colliderOffset = 8f;
 	[SerializeField]
-	private PlayerController playerController;
+	private PlayerController playerController = null;
 
 	private void Start()
 	{

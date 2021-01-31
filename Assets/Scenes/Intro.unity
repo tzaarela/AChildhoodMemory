@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myText: {fileID: 1270442687}
+  sequenceName: Intro
 --- !u!4 &237638021
 Transform:
   m_ObjectHideFlags: 0

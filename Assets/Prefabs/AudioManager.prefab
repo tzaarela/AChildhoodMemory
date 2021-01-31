@@ -53,7 +53,16 @@ MonoBehaviour:
   dashVolume: 1
   wallJump: {fileID: 8300000, guid: e92e37d036f50a74f917b455c027a5a8, type: 3}
   wallJumpVolume: 1
+  volumes:
+  - 0.8
+  - 0.8
+  - 0.8
+  musicClips:
+  - {fileID: 8300000, guid: aad51c3f210705b40bdeaf9c611ffbea, type: 3}
+  - {fileID: 8300000, guid: 746a723cb07127d4ba048a54b50e7928, type: 3}
+  - {fileID: 8300000, guid: 709d076b4b46b154695120fcc197eebf, type: 3}
   effectsAudioSource: {fileID: 4271776487663706911}
+  musicAudioSource: {fileID: 6606944785976327047}
 --- !u!82 &4271776487663706911
 AudioSource:
   m_ObjectHideFlags: 0
@@ -157,14 +166,14 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9048537701464390348}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.2
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

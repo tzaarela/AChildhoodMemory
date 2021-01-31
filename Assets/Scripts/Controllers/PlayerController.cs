@@ -8,7 +8,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField] private SurfaceEffector2D sideWallLeft, sideWallRight;
+	[SerializeField] 
+	private SurfaceEffector2D sideWallLeft = null;
+
+	[SerializeField] 
+	private SurfaceEffector2D sideWallRight = null;
 
 	[Header("Player")]
 	public Vector3 playerPosition;
@@ -24,18 +28,18 @@ public class PlayerController : MonoBehaviour
 	public float wallSensitivity = 1f;
 	public float fallMultiplier = 2.5f;
 	public LayerMask groundLayer, wallLayer;
+
 	[Header("Animations")]
 	public float walkSensitivity = 1f;
 
 	[Header("Particles")]
-	[SerializeField] PlayerParticles playerParticles;
-	
+	[SerializeField] PlayerParticles playerParticles = null;
+
 	[Header("UI")]
 	public GameObject checkpointText = null;
-	
+
 	private float horizontalInput;
 	private bool isCornered;
-	private bool isJumping;
 	private bool isGrounded;
 	private bool isDashing;
 	private bool canWallJump;
@@ -43,13 +47,11 @@ public class PlayerController : MonoBehaviour
 	private bool wallJumpLeft, wallJumpRight;
 	private Rigidbody2D rb;
 	private Animator animator;
-	private SpriteRenderer spriteRenderer;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponentInChildren<Animator>();
-		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 	}
 
 	private void FixedUpdate()
@@ -60,14 +62,14 @@ public class PlayerController : MonoBehaviour
 		CheckIfCornered();
 		CheckForWalls();
 		ImproveJump();
-		
+
 		if (isGrounded && Mathf.Abs(rb.velocity.x) > walkSensitivity)
 			animator.SetBool("isMoving", true);
 		else
 			animator.SetBool("isMoving", false);
 	}
 
-	private void Move() 
+	private void Move()
 	{
 		if (Mathf.Abs(rb.velocity.x) < maxSpeed)
 			rb.velocity += new Vector2(horizontalInput * speed, 0);
@@ -86,7 +88,7 @@ public class PlayerController : MonoBehaviour
 		{
 			isGrounded = true;
 		}
-		
+
 		animator.SetBool("isGrounded", isGrounded);
 	}
 	private void CheckIfCornered()
@@ -102,7 +104,7 @@ public class PlayerController : MonoBehaviour
 		sideWallLeft.enabled = !isCornered;
 		sideWallRight.enabled = !isCornered;
 	}
-	
+
 	private void CheckForWalls()
 	{
 		canWallJump = false;
@@ -136,15 +138,15 @@ public class PlayerController : MonoBehaviour
 		wallJumpRight = hitWallRight.collider != null;
 	}
 
-	
-	
+
+
 	private void Jump(InputAction.CallbackContext jumpAction)
 	{
 		//if (!isJumping)
 		//	return;
 
-		if(canWallJump && !isGrounded)
-        {
+		if (canWallJump && !isGrounded)
+		{
 			if (jumpAction.performed)
 			{
 				if (wallJumpLeft)
@@ -201,8 +203,8 @@ public class PlayerController : MonoBehaviour
 		if (rb.velocity.y < 0)
 			rb.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
 	}
-	
-public void GiveDoubleJump()
+
+	public void GiveDoubleJump()
 	{
 		canDoubleJump = true;
 		StartCoroutine(PowerDrainCoroutine());
@@ -256,7 +258,7 @@ public void GiveDoubleJump()
 		checkpointText.SetActive(true);
 		StartCoroutine(CheckpointReached());
 	}
-	
+
 	public IEnumerator CheckpointReached()
 	{
 		float time = 0;
