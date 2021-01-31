@@ -91,6 +91,7 @@ public void PlaySound(string soundClip)
 
 	public void PlayNextSong()
     {
+		musicAudioSource.Stop();
 		currentSongIndex++;
 		if (currentSongIndex >= musicClips.Count)
 			currentSongIndex = 0;

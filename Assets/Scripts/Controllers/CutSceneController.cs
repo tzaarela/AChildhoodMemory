@@ -36,8 +36,14 @@ public class CutSceneController : MonoBehaviour
     public void ChangeScene()
     {
         if(sequenceName == "Intro")
+        {
             SceneController.Instance.ChangeScene("GameScene");
+            AudioController.Instance.PlayNextSong();
+        }
         if(sequenceName == "Outro")
+        {
             SceneController.Instance.ChangeScene("MainMenu");
+            AudioController.Instance.PlayNextSong();
+        }
     }
 }
