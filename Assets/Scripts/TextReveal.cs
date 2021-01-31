@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TextReveal : MonoBehaviour
 {
@@ -27,5 +28,7 @@ public class TextReveal : MonoBehaviour
         }
         yield return new WaitForSeconds(2);
         text.maxVisibleCharacters = 0;
+        yield return new WaitForSeconds(3);
+        SceneController.Instance.ChangeScene("GameScene");
     }
 }
