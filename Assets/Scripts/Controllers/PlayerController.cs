@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
 	public float wallSensitivity = 1f;
 	public float fallMultiplier = 2.5f;
 	public LayerMask groundLayer, wallLayer;
-
 	[Header("Animations")]
 	public float walkSensitivity = 1f;
 

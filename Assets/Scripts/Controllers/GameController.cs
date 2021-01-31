@@ -18,7 +18,7 @@ public class GameController : ScriptableObject
 	public Action<PlayerController> OnCheckpointReached;
 	public Action<PlayerController> OnGameCompleted;
 
-	public GameObject confetti;
+	public GameObject checkPointCelebrationEffect;
 
 	[SerializeField]
 	private int checkpointsReached;
@@ -52,13 +52,14 @@ public class GameController : ScriptableObject
 	{
 		Debug.Log("Checkpoint reached!");
 		checkpointsReached += 1;
-		Instantiate(confetti, playerController.transform.position, Quaternion.identity);
+		Instantiate(checkPointCelebrationEffect, playerController.transform.position, Quaternion.identity);
 		playerController.StartCheckpointReached();
 	}
 	
 	private void HandleOnGameCompleted(PlayerController playerController)
 	{
 		Debug.Log("Game completed!");
+		UIController.Instance.FadeOutWhite();
 		//playerController.transform.position = spawnpoints[0].transform.position;
 		//CameraController.Instance.ResetCameraPosition(playerController);
 	}
