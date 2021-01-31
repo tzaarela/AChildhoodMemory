@@ -66,18 +66,15 @@ public class PlayerController : MonoBehaviour
 			animator.SetBool("isMoving", true);
 		else
 			animator.SetBool("isMoving", false);
-
-		if (rb.velocity.x < 0)
-			spriteRenderer.flipX = true;
-		else
-			spriteRenderer.flipX = false;
-
 	}
 
 	private void Move() 
 	{
 		if (Mathf.Abs(rb.velocity.x) < maxSpeed)
 			rb.velocity += new Vector2(horizontalInput * speed, 0);
+
+		animator.SetFloat("xVelocity", rb.velocity.x);
+		animator.SetFloat("yVelocity", rb.velocity.y);
 	}
 
 	private void CheckIfGrounded()
@@ -89,6 +86,8 @@ public class PlayerController : MonoBehaviour
 		{
 			isGrounded = true;
 		}
+		
+		animator.SetBool("isGrounded", isGrounded);
 	}
 	
 	private void CheckForWalls()
@@ -97,8 +96,12 @@ public class PlayerController : MonoBehaviour
 		var hitWallRight = Physics2D.Raycast(transform.position, Vector2.right, wallSensitivity, wallLayer);
 
 		canWallJump = false;
+		animator.SetBool("isWallSlidingLeft", hitWallLeft.collider != null);
+		animator.SetBool("isWallSlidingRight", hitWallRight.collider != null);
+
 		if (hitWallLeft.collider != null || hitWallRight.collider != null)
 		{
+
 			canWallJump = true;
 			if (rb.velocity.y < -0.05 && !isGrounded)
 			{
@@ -135,27 +138,29 @@ public class PlayerController : MonoBehaviour
 	{
 		//if (!isJumping)
 		//	return;
-		
 
-		if (canWallJump && !isGrounded && jumpAction.performed)
-		{
-			if (wallJumpLeft)
+		if(canWallJump && !isGrounded)
+        {
+
+			if (jumpAction.performed)
 			{
-				AudioController.Instance.PlaySound("WallJump");
+				if (wallJumpLeft)
+				{
+					AudioController.Instance.PlaySound("WallJump");
+					animator.SetTrigger("onSideJump");
+					rb.velocity = new Vector2(4, 4);
+					rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
+				}
+				else if (wallJumpRight)
+				{
+					AudioController.Instance.PlaySound("WallJump");
+					animator.SetTrigger("onSideJump");
+					rb.velocity = new Vector2(-4, 4);
+					rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
+				}
 
-				animator.SetTrigger("onSideJump");
-				rb.velocity = new Vector2(4, 4);
-				rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
+				Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
 			}
-			else if (wallJumpRight)
-			{
-				AudioController.Instance.PlaySound("WallJump");
-				animator.SetTrigger("onSideJump");
-				rb.velocity = new Vector2(-4, 4);
-				rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
-			}
-
-			Instantiate(playerParticles.jumpDustParticleSystem, transform.position, Quaternion.identity);
 		}
 
 		else if (isGrounded && jumpAction.performed)
