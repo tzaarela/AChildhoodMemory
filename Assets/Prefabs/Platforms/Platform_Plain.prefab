@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4990447264262789615}
   - component: {fileID: 737904012}
   m_Layer: 6
-  m_Name: Platform
+  m_Name: Platform_Plain
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.062087506}
   m_SpriteTilingProperty:
-    border: {x: 0.5625, y: 0.15625, z: 0.5625, w: 0}
+    border: {x: 0.5625, y: 0, z: 0.5625, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.28125, y: 0.375}
     newSize: {x: 2.2776775, y: 0.4053185}
@@ -145,8 +145,8 @@ MonoBehaviour:
   m_HasRenderer: 1
   m_UseRendererSilhouette: 0
   m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: c547f518
+  m_SelfShadows: 1
+  m_ApplyToSortingLayers: c547f518f7f0772c43aad9f600000000
   m_ShapePath:
   - {x: -1.1371826, y: -0.045722485, z: 0}
   - {x: 1.1388388, y: -0.04660368, z: 0}
@@ -154,4 +154,4 @@ MonoBehaviour:
   - {x: -1.1388388, y: 0.20265925, z: 0}
   m_ShapePathHash: -302071268
   m_Mesh: {fileID: 0}
-  m_InstanceId: -117888
+  m_InstanceId: -8616

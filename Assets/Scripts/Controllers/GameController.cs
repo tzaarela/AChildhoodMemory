@@ -26,7 +26,6 @@ public class GameController : ScriptableObject
 	private Camera mainCamera;
 	private Spawnpoint[] spawnpoints;
 	private Vector3 cameraStartPosition;
-	private Coroutine WaitForCamera;
 
 	public void Init()
 	{

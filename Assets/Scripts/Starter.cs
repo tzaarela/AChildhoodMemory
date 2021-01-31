@@ -5,10 +5,10 @@ using UnityEngine;
 public class Starter : MonoBehaviour
 { 
     [SerializeField]
-    private GameController gameController;
+    private GameController gameController = null;
 
-    [SerializeField]
-    private GameController levelController;
+    //[SerializeField]
+    //private GameController levelController;
 
     public void Awake()
     {

@@ -5,7 +5,6 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
 	private float frames;
-	private Vector3 movement, currentPos;
 	private CircleCollider2D circleCollider2D;
 
 	public PowerType powerType;
