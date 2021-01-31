@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
-public class TextReveal : MonoBehaviour
+public class IntroController : MonoBehaviour
 {
     [SerializeField] TMP_Text myText = null;
 
     IEnumerator Start()
     {
         myText.maxVisibleCharacters = 0;
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(6.5f);
         StartCoroutine(RevealText(myText));
+        yield return new WaitForSeconds(11f);
+        StartGame();
     }
 
     private static IEnumerator RevealText(TMP_Text text)
@@ -28,7 +29,10 @@ public class TextReveal : MonoBehaviour
         }
         yield return new WaitForSeconds(2);
         text.maxVisibleCharacters = 0;
-        yield return new WaitForSeconds(4);
+    }
+
+    public void StartGame()
+    {
         SceneController.Instance.ChangeScene("GameScene");
     }
 }
