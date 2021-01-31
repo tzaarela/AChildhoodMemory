@@ -33,7 +33,7 @@ public class GameController : ScriptableObject
 		if (Instance != this)
 			Instance = this;
 
-		checkpointsReached = 0;
+		checkpointsReached = 1;
 		OnPlayerDie += HandleOnPlayerDie;
 		OnCheckpointReached += HandleOnCheckpointReached;
 		OnGameCompleted += HandleOnGameCompleted;

@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 		playerPosition = transform.position;
 		Move();
 		CheckIfGrounded();
-		//CheckIfCornered();
+		CheckIfCornered();
 		CheckForWalls();
 		ImproveJump();
 		
@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
 		animator.SetFloat("yVelocity", rb.velocity.y);
 	}
 
+
 	private void CheckIfGrounded()
 	{
 		var hitGround = Physics2D.Raycast(transform.position, Vector2.down, jumpSensitivity, groundLayer);
@@ -89,15 +90,32 @@ public class PlayerController : MonoBehaviour
 		
 		animator.SetBool("isGrounded", isGrounded);
 	}
+	private void CheckIfCornered()
+	{
+		isCornered = canWallJump && isGrounded;
+
+		if (sideWallLeft == null || sideWallRight == null)
+		{
+			Debug.LogError("SideWalls not assigned in PlayerController");
+			return;
+		}
+
+		sideWallLeft.enabled = !isCornered;
+		sideWallRight.enabled = !isCornered;
+	}
 	
 	private void CheckForWalls()
 	{
+		canWallJump = false;
+
+		if (isCornered)
+			return;
+
 		var hitWallLeft = Physics2D.Raycast(transform.position, Vector2.left, wallSensitivity, wallLayer);
 		var hitWallRight = Physics2D.Raycast(transform.position, Vector2.right, wallSensitivity, wallLayer);
 
-		canWallJump = false;
-		animator.SetBool("isWallSlidingLeft", hitWallLeft.collider != null);
-		animator.SetBool("isWallSlidingRight", hitWallRight.collider != null);
+		animator.SetBool("isTouchingWallLeft", hitWallLeft.collider != null);
+		animator.SetBool("isTouchingWallRight", hitWallRight.collider != null);
 
 		if (hitWallLeft.collider != null || hitWallRight.collider != null)
 		{
@@ -117,22 +135,9 @@ public class PlayerController : MonoBehaviour
 
 		wallJumpLeft = hitWallLeft.collider != null;
 		wallJumpRight = hitWallRight.collider != null;
-
 	}
 
-	private void CheckIfCornered()
-	{
-		isCornered = canWallJump && isGrounded;
-
-		if(sideWallLeft == null || sideWallRight == null)
-		{
-			Debug.LogError("SideWalls not assigned in PlayerController");
-			return;
-		}
-		
-		sideWallLeft.enabled = !isCornered;
-		sideWallRight.enabled = !isCornered;
-	}
+	
 	
 	private void Jump(InputAction.CallbackContext jumpAction)
 	{
@@ -141,13 +146,13 @@ public class PlayerController : MonoBehaviour
 
 		if(canWallJump && !isGrounded)
         {
-
 			if (jumpAction.performed)
 			{
 				if (wallJumpLeft)
 				{
 					AudioController.Instance.PlaySound("WallJump");
 					animator.SetTrigger("onSideJump");
+					rb.velocity = Vector2.zero;
 					rb.velocity = new Vector2(4, 4);
 					rb.AddForce(new Vector2(wallJumpStrength, wallJumpVerticalBoost), ForceMode2D.Impulse);
 				}
@@ -155,6 +160,7 @@ public class PlayerController : MonoBehaviour
 				{
 					AudioController.Instance.PlaySound("WallJump");
 					animator.SetTrigger("onSideJump");
+					rb.velocity = Vector2.zero;
 					rb.velocity = new Vector2(-4, 4);
 					rb.AddForce(new Vector2(wallJumpStrength * -1, wallJumpVerticalBoost), ForceMode2D.Impulse);
 				}
