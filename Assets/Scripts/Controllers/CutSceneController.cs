@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class IntroController : MonoBehaviour
+public class CutSceneController : MonoBehaviour
 {
     [SerializeField] TMP_Text myText = null;
+
+    public string sequenceName;
 
     IEnumerator Start()
     {
@@ -13,7 +15,7 @@ public class IntroController : MonoBehaviour
         yield return new WaitForSeconds(6.5f);
         StartCoroutine(RevealText(myText));
         yield return new WaitForSeconds(11f);
-        StartGame();
+        ChangeScene();
     }
 
     private static IEnumerator RevealText(TMP_Text text)
@@ -31,8 +33,11 @@ public class IntroController : MonoBehaviour
         text.maxVisibleCharacters = 0;
     }
 
-    public void StartGame()
+    public void ChangeScene()
     {
-        SceneController.Instance.ChangeScene("GameScene");
+        if(sequenceName == "Intro")
+            SceneController.Instance.ChangeScene("GameScene");
+        if(sequenceName == "Outro")
+            SceneController.Instance.ChangeScene("MainMenu");
     }
 }
